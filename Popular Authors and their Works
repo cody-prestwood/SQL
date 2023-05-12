@@ -1,0 +1,88 @@
+/* I've created 2 datasets, one containing information on popular authors and another containing information on the book series' they have written. */
+
+/* Authors dataset */
+
+CREATE TABLE authors (id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, series_title TEXT);
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("George R.R.", "Martin", "A Song of Ice and Fire");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("J.K.", "Rowling", "Harry Potter");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("C.S.", "Lewis", "Chronicles of Narnia");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("J.R.R.", "Tolkien", "The Lord of the Rings");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Andrzej", "Sapkowski", "The Witcher");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Suzanne", "Collin", "The Hunger Games");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Lee", "Child", "Jack Reacher");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Brett", "Helquist", "A Series of Unfortunate Events");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Stephen", "King", "The Dark Tower");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Kevin", "Kwan", "Crazy Rich Asians");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Jeff", "Kinney", "Diary of a Wimpy Kid");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Diana", "Gabaldon", "Outlander");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Rick", "Riordan", "Percy Jackson & The Olympians");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("N.K.", "Jemisin", "The Broken Earth");
+
+INSERT INTO authors (first_name, last_name, series_title) VALUES ("Ann", "Brashares", "The Sisterhood of the Traveling Pants");
+
+
+/* genre and release year */
+
+CREATE TABLE genres (id INTEGER PRIMARY KEY, series_title TEXT, genre TEXT, release_date INTEGER);
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("A Song of Ice and Fire", "fantasy", "1996");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Harry Potter", "fantasy", "1997");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Chronicles of Narnia", "fantasy", "1950");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Lord of the Rings", "fantasy", "1954");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("The Witcher", "fantasy", "2007");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("The Hunger Games", "action", "2008");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Jack Reacher", "action", "1997");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("A Series of Unfourtunate Events", " mystery", "1999");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Dark Tower", "horror", "1982");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Crazy Rich Asians", "romance", "2013");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Diary of a Wimpy Kid", "childrens", "2007");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Outlander", "fantasy", "1991");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("Percy Jackson & the Olympians", "fantasy", "2005");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("The Broken Earth", "science fiction", "2015");
+
+INSERT INTO genres (series_title, genre, release_date) VALUES ("The Sisterhood of the Traveling Pants", "young adult", "2001");
+
+
+/* vizualing table data*/
+
+SELECT * FROM authors ORDER BY last_name;
+SELECT * FROM genres ORDER BY release_date;
+
+/* Join showing authors name with series genre */
+
+SELECT authors.first_name, authors.last_name, genres.genre
+FROM authors
+INNER JOIN genres
+ON authors.series_title = genres.series_title;
+
+/* This project highlights the ability to aggregate information from multiple datasets using the "JOIN" function. */
+
+
+
