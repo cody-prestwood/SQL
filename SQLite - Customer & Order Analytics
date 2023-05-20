@@ -1,0 +1,148 @@
+/* Using SQLite, this project answers a series of questions from a Customer & Order database provided by the BreakIntoTech program. */
+
+/* How many orders were placed in January? */
+
+SELECT Count(orderid) FROM BIT_DB.JanSales
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID';
+
+/* How many of those orders were for an iPhone? */
+
+SELECT Count(orderid) FROM BIT_DB.JanSales
+WHERE product = 'iPhone'
+AND length(orderid) = 6 
+AND orderid <> 'Order ID';
+
+/* Select the customer account numbers for all the orders that were placed in Feb. */
+
+SELECT distinct acctnum FROM BIT_DB.customers customer
+INNER JOIN BIT_DB.FebSales feb
+ON customer.order_id = feb.orderid
+WHERE length(orderid) = 6
+AND orderid <> 'Order ID';
+
+/* Which product was the cheapest one sold in Jan, and what was the price? */
+
+SELECT distinct product, price FROM BIT_DB.JanSales
+ORDER BY price ASC LIMIT 1;
+
+/* What is the total revenue for each product sold in Jan? */
+
+SELECT SUM(quantity)*price AS revenue, product
+FROM BIT_DB.JanSales
+GROUP BY product;
+
+/* Which products were sold in Feb at 548 Lincoln St, Seattle, WA 98101, 
+how many of each were sold and what was the total revenue? */
+
+SELECT SUM(quantity), product, SUM(quantity)*price AS revenue
+FROM BIT_DB.FebSales
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY product;
+
+/* How many customers ordered more than 2 products at a time in Feb, 
+and what was the average amount spent for those customers? */
+
+SELECT COUNT(distinct customers.acctnum), AVG(quantity*price)
+FROM BIT_DB.FebSales feb
+LEFT JOIN BIT_DB.customers customers
+ON feb.orderid = customers.order_id
+WHERE feb.Quantity > 2 
+AND length(orderid) = 6
+AND orderid <> 'Order ID';
+
+
+/* List all the products sold in Feb from Los Angeles, and include how many of each were sold.
+
+SELECT product, SUM(quantity)
+FROM BIT_DB.FebSales
+WHERE location LIKE '%Los Angeles%'
+GROUP BY product;
+
+/* Which locations in NY recieved at least 3 orders in Jan, and how many orders did they each recieve? */
+
+SELECT distinct location, count(orderID)
+FROM BIT_DB.JanSales 
+WHERE location LIKE '%NY%'
+AND length(orderID) = 6
+AND orderID <> 'Order ID'
+GROUP BY location
+HAVING count(orderID) > 2;
+
+/* How many of each type of headphone were sold in Feb? */
+
+SELECT SUM(quantity) as quantity, product
+FROM BIT_DB.FebSales
+WHERE product LIKE '%headphones%'
+GROUP BY product;
+
+/* What was the average amount spent per account in Feb? */
+
+SELECT AVG(quantity*price)
+FROM BIT_DB.FebSales feb
+LEFT JOIN BIT_DB.customers customers
+ON feb.orderID = customers.order_id
+WHERE length(orderID) = 6
+AND orderID <> 'Order ID';
+
+/* What was the average quantity of products purchased per acct in Feb? */
+
+SELECT SUM(quantity)/COUNT(customers.acctnum)
+FROM BIT_DB.FebSales feb
+LEFT JOIN BIT_DB.customers customers
+ON feb.orderID = customers.order_id
+WHERE length(orderID) = 6
+AND orderID <> 'Order ID';
+
+/* Which product brought in the most revenue in Jan, and how much revenue did it bring in total? */
+
+SELECT product, sum(quantity*price) AS revenue
+FROM BIT_DB.JanSales
+GROUP BY product
+ORDER BY revenue desc
+LIMIT 1;
+
+
+
+/* Continued... */
+/*Also using SQLite, I have downloaded a Spotify database from Kaggle, created a table of information from the top 50 song in 2021 and imported the data into the BIT_DB database. */
+
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+song_key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+song_mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness decimal(8,7) NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL )
+
+/* What were the artist and track names for the 10 most popular songs of 2021? */
+
+SELECT artist_name, track_name, popularity
+FROM BIT_DB.Spotifydata
+ORDER BY popularity desc
+LIMIT 10;
+
+/* What was the longest song from the top 50 table? */
+
+SELECT distinct track_name
+FROM BIT_DB.Spotifydata
+ORDER BY duration_ms DESC
+LIMIT 1
+
+/* I want to see if there is correlation between danceability and energy within songs above 90 popularity. What are the averages of the 2 columns? */
+
+SELECT AVG(danceability), AVG(energy)
+FROM BIT_DB.Spotifydata
+HAVING popularity > 89;
