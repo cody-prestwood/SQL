@@ -158,4 +158,16 @@ GROUP BY street)
 
 SELECT street, rating, 'safe lane' as 'label'
 FROM safety_average_cte
-WHERE rating >= 4
+WHERE rating >= 4;
+
+/* Advanced or Unique Functions, Window Function example. */
+/* If our city boss asked us to provide a recommendation on bike lanes that need to be removed, need to be improved, and need to be left 'as is' based on the safety ratings, could we show a table using street name,
+safety rating, average safety rating, and recommendation? Safety rating 4 or more can be left as is, Less than 2.5 can be removed. */
+
+SELECT street, safetyrating,
+AVG(safetyrating) OVER (PARTITION BY street) as "Average_safety_rating",
+CASE WHEN AVG(safetyrating) OVER (PARTITION BY street) >=4 THEN "Leave As-Is"
+    WHEN AVG(safetyrating) OVER (PARTITION BY street) <2.5 THEN "Remove"
+    ELSE "Improvements Needed"
+    END AS "Recommendation"
+FROM CityBikeLanes;
