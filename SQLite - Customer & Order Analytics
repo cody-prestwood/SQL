@@ -146,3 +146,16 @@ LIMIT 1
 SELECT AVG(danceability), AVG(energy)
 FROM BIT_DB.Spotifydata
 HAVING popularity > 89;
+
+
+/* CTE 'Temporary Tables' practice using a new data set called CityBikeLanes. I've inserted 60 rows of data into the BIT_DB database and run analysis to gain information on bike lane safety. */
+/* What is the average safety rating for each bike lane? Label any bike lane with an average rating above 4 as a 'safe lane'. */
+
+WITH safety_average_cte AS
+(SELECT street, AVG(safetyrating) as 'rating'
+FROM CityBikeLanes
+GROUP BY street)
+
+SELECT street, rating, 'safe lane' as 'label'
+FROM safety_average_cte
+WHERE rating >= 4
